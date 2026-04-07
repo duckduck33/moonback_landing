@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ko" id="html-root" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoonBacktest — MoonBack Finder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Outfit', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+          },
+          colors: {
+            space: { DEFAULT: '#0A0E17', deep: '#050810', card: '#0f1524' },
+            moon: '#F6E05E',
+            mint: '#00C087',
+          },
+          animation: {
+            'glow-pulse': 'glow-pulse 3s ease-in-out infinite',
+            'float-slow': 'float 8s ease-in-out infinite',
+          },
+          keyframes: {
+            'glow-pulse': {
+              '0%, 100%': { boxShadow: '0 0 20px rgba(246, 224, 94, 0.12), 0 0 60px rgba(246, 224, 94, 0.05)' },
+              '50%': { boxShadow: '0 0 32px rgba(246, 224, 94, 0.22), 0 0 80px rgba(246, 224, 94, 0.1)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-6px)' },
+            },
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="min-h-screen bg-space text-slate-200 antialiased selection:bg-moon/30 selection:text-white">
+  <!-- Ambient orbs (Tailwind-only decoration) -->
+  <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+    <div class="absolute -left-32 top-0 h-[420px] w-[420px] rounded-full bg-violet-600/10 blur-[100px]"></div>
+    <div class="absolute right-0 top-1/4 h-[380px] w-[380px] rounded-full bg-cyan-500/5 blur-[90px]"></div>
+    <div class="absolute bottom-0 left-1/3 h-[300px] w-[500px] rounded-full bg-indigo-900/20 blur-[80px]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_120%_80%_at_50%_-30%,rgba(99,102,241,0.12),transparent_55%)]"></div>
+    <div class="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,#050810_100%)] opacity-90"></div>
+  </div>
+
+  <!-- Star dots -->
+  <div class="pointer-events-none fixed inset-0 -z-10 opacity-40" aria-hidden="true">
+    <div class="absolute left-[8%] top-[12%] h-0.5 w-0.5 rounded-full bg-white/80"></div>
+    <div class="absolute left-[22%] top-[8%] h-px w-px rounded-full bg-white/60"></div>
+    <div class="absolute left-[78%] top-[18%] h-0.5 w-0.5 rounded-full bg-moon/70"></div>
+    <div class="absolute left-[88%] top-[28%] h-px w-px rounded-full bg-white/50"></div>
+    <div class="absolute left-[15%] top-[45%] h-0.5 w-0.5 rounded-full bg-white/40"></div>
+    <div class="absolute left-[55%] top-[38%] h-px w-px rounded-full bg-cyan-200/50"></div>
+    <div class="absolute left-[92%] top-[55%] h-0.5 w-0.5 rounded-full bg-white/60"></div>
+    <div class="absolute left-[35%] top-[72%] h-px w-px rounded-full bg-white/30"></div>
+    <div class="absolute left-[65%] top-[82%] h-0.5 w-0.5 rounded-full bg-moon/50"></div>
+  </div>
+
+  <header class="sticky top-0 z-50 border-b border-white/5 bg-space/80 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+      <a href="#" class="group flex items-center gap-2.5">
+        <span class="flex h-10 w-10 items-center justify-center rounded-xl border border-moon/25 bg-gradient-to-br from-moon/20 to-transparent text-moon shadow-[0_0_24px_rgba(246,224,94,0.15)] transition group-hover:border-moon/50">
+          <i class="fa-solid fa-moon text-lg"></i>
+        </span>
+        <div class="flex flex-col leading-tight">
+          <span class="text-sm font-semibold tracking-wide text-white" data-i18n="brand">MoonBacktest</span>
+          <span class="text-[11px] font-medium uppercase tracking-[0.2em] text-slate-500" data-i18n="brand_tag">Full-universe backtest</span>
+        </div>
+      </a>
+      <nav class="hidden items-center gap-8 lg:flex">
+        <a href="#finder" class="text-sm font-medium text-slate-400 transition hover:text-moon" data-i18n="nav_finder">MoonBack Finder</a>
+        <a href="#youtube" class="text-sm font-medium text-slate-400 transition hover:text-moon" data-i18n="nav_youtube">YouTube</a>
+        <a href="#docs" class="text-sm font-medium text-slate-400 transition hover:text-moon" data-i18n="nav_docs">Docs</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <label for="lang-select" class="sr-only" data-i18n="lang_label">Language</label>
+        <div class="relative">
+          <i class="fa-solid fa-globe pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-500"></i>
+          <select id="lang-select" class="cursor-pointer appearance-none rounded-lg border border-white/10 bg-space-card py-2 pl-9 pr-8 text-sm font-medium text-slate-200 outline-none transition hover:border-moon/30 focus:border-moon/50 focus:ring-1 focus:ring-moon/30">
+            <option value="ko">한국어</option>
+            <option value="en">English</option>
+          </select>
+          <i class="fa-solid fa-chevron-down pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-500"></i>
+        </div>
+      </div>
+    </div>
+    <nav class="flex justify-center gap-5 border-t border-white/5 py-2.5 lg:hidden">
+      <a href="#finder" class="text-xs font-medium text-slate-400 hover:text-moon" data-i18n="nav_finder">MoonBack Finder</a>
+      <a href="#youtube" class="text-xs font-medium text-slate-400 hover:text-moon" data-i18n="nav_youtube">YouTube</a>
+      <a href="#docs" class="text-xs font-medium text-slate-400 hover:text-moon" data-i18n="nav_docs">Docs</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="relative mx-auto max-w-7xl px-4 pb-20 pt-16 sm:px-6 sm:pt-24 lg:px-8 lg:pt-28">
+      <div class="mx-auto max-w-3xl text-center">
+        <p class="mb-4 inline-flex items-center gap-2 rounded-full border border-moon/20 bg-moon/5 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-moon/90">
+          <i class="fa-solid fa-chart-line text-[10px]"></i>
+          <span data-i18n="hero_badge">MoonBack Finder · Professional terminal</span>
+        </p>
+        <h1 class="text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl" data-i18n="hero_title"></h1>
+        <p class="mx-auto mt-6 max-w-2xl text-lg text-slate-400" data-i18n="hero_sub"></p>
+        <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a href="#finder" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-moon to-amber-300 px-8 py-3.5 text-sm font-semibold text-space-deep shadow-[0_0_40px_rgba(246,224,94,0.25)] transition hover:brightness-110 sm:w-auto">
+            <i class="fa-solid fa-rocket"></i>
+            <span data-i18n="cta_primary"></span>
+          </a>
+          <a href="#youtube" class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-8 py-3.5 text-sm font-semibold text-white backdrop-blur transition hover:border-moon/40 hover:bg-white/10 sm:w-auto">
+            <i class="fa-brands fa-youtube text-red-400"></i>
+            <span data-i18n="cta_youtube"></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="docs" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h2 class="text-2xl font-semibold text-white sm:text-3xl" data-i18n="how_title"></h2>
+        <p class="mx-auto mt-3 max-w-xl text-slate-400" data-i18n="how_sub"></p>
+      </div>
+      <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <article class="group rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.07] to-transparent p-8 transition hover:border-mint/30 hover:shadow-[0_0_40px_rgba(0,192,135,0.08)]">
+          <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-mint/15 text-mint">
+            <i class="fa-solid fa-satellite-dish text-xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-white" data-i18n="card1_title"></h3>
+          <p class="mt-3 text-sm leading-relaxed text-slate-400" data-i18n="card1_body"></p>
+        </article>
+        <article class="group rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.07] to-transparent p-8 transition hover:border-moon/30 hover:shadow-[0_0_40px_rgba(246,224,94,0.08)]">
+          <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-moon/15 text-moon">
+            <i class="fa-solid fa-flask text-xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-white" data-i18n="card2_title"></h3>
+          <p class="mt-3 text-sm leading-relaxed text-slate-400" data-i18n="card2_body"></p>
+        </article>
+        <article class="group rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.07] to-transparent p-8 transition hover:border-violet-400/30 hover:shadow-[0_0_40px_rgba(167,139,250,0.08)]">
+          <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-violet-500/15 text-violet-300">
+            <i class="fa-solid fa-filter-circle-dollar text-xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-white" data-i18n="card3_title"></h3>
+          <p class="mt-3 text-sm leading-relaxed text-slate-400" data-i18n="card3_body"></p>
+        </article>
+        <article class="group rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.07] to-transparent p-8 transition hover:border-orange-400/30 hover:shadow-[0_0_40px_rgba(251,146,60,0.08)]">
+          <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-orange-500/15 text-orange-300">
+            <i class="fa-solid fa-robot text-xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-white" data-i18n="card4_title"></h3>
+          <p class="mt-3 text-sm leading-relaxed text-slate-400" data-i18n="card4_body"></p>
+        </article>
+      </div>
+    </section>
+
+    <!-- MoonBack Finder — results table preview -->
+    <section id="finder" class="mx-auto max-w-[100rem] px-4 py-16 sm:px-6 lg:px-8">
+      <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h2 class="text-2xl font-semibold text-white sm:text-3xl" data-i18n="preview_title"></h2>
+          <p class="mt-2 max-w-2xl text-slate-400" data-i18n="preview_sub"></p>
+        </div>
+        <div class="flex items-center gap-2 rounded-lg border border-mint/25 bg-mint/10 px-3 py-2 text-xs font-medium text-mint">
+          <i class="fa-solid fa-crown"></i>
+          <span data-i18n="preview_top_hint"></span>
+        </div>
+      </div>
+
+      <div class="overflow-hidden rounded-2xl border border-white/10 bg-space-card/80 shadow-2xl shadow-black/50 backdrop-blur-xl">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 bg-black/20 px-4 py-3 sm:px-5">
+          <div class="flex items-center gap-2 text-xs font-mono text-slate-500">
+            <span class="h-2 w-2 rounded-full bg-mint"></span>
+            <span data-i18n="preview_window_title">MoonBack Finder</span>
+          </div>
+          <div class="flex gap-2 text-[10px] text-slate-600">
+            <span class="rounded bg-white/5 px-2 py-0.5" data-i18n="preview_tag_bt">Backtest results</span>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[640px] border-collapse text-left text-xs sm:text-sm">
+            <thead>
+              <tr class="border-b border-white/10 bg-white/[0.03] font-mono text-[10px] uppercase tracking-wider text-slate-500 sm:text-xs">
+                <th class="sticky left-0 z-20 whitespace-nowrap border-r border-white/5 bg-space-card px-3 py-3 pl-4" data-i18n="th_rank"></th>
+                <th class="whitespace-nowrap px-3 py-3" data-i18n="th_coin"></th>
+                <th class="whitespace-nowrap px-3 py-3 text-moon/90" data-i18n="th_price"></th>
+                <th class="whitespace-nowrap px-3 py-3 text-mint/90" data-i18n="th_win"></th>
+                <th class="whitespace-nowrap px-3 py-3 text-cyan-300/90" data-i18n="th_pf"></th>
+                <th class="whitespace-nowrap px-3 py-3 pr-4" data-i18n="th_signal"></th>
+              </tr>
+            </thead>
+            <tbody class="font-mono text-xs text-slate-300 sm:text-sm">
+              <tr class="animate-glow-pulse border-b border-moon/20 bg-gradient-to-r from-moon/10 via-moon/5 to-transparent">
+                <td class="sticky left-0 z-10 border-r border-white/5 bg-[#121a2e] px-3 py-3 pl-4 font-sans font-semibold text-moon">
+                  <span class="mr-1.5 inline-flex h-5 w-5 items-center justify-center rounded bg-moon/20 text-[10px] text-moon">1</span>
+                  <span data-i18n="mock_top_label">Top 1%</span>
+                </td>
+                <td class="px-3 py-3 font-sans font-medium text-white">SOL_USDT</td>
+                <td class="px-3 py-3 tabular-nums text-slate-200">142.35</td>
+                <td class="px-3 py-3 text-mint">68%</td>
+                <td class="px-3 py-3 text-cyan-200">2.41</td>
+                <td class="px-3 py-3 pr-4 font-sans text-xs text-moon cell-bilingual" data-ko="롱 · 4h 전" data-en="Long · 4h ago"></td>
+              </tr>
+              <tr class="border-b border-white/5 transition hover:bg-white/[0.02]">
+                <td class="sticky left-0 z-10 border-r border-white/5 bg-space-card px-3 py-3 pl-4 font-sans text-slate-500">2</td>
+                <td class="px-3 py-3 font-sans font-medium text-white">INJ_USDT</td>
+                <td class="px-3 py-3 tabular-nums text-slate-200">24.18</td>
+                <td class="px-3 py-3 text-mint">61%</td>
+                <td class="px-3 py-3 text-cyan-200">1.92</td>
+                <td class="px-3 py-3 pr-4 font-sans text-xs text-slate-300 cell-bilingual" data-ko="롱 · 12h 전" data-en="Long · 12h ago"></td>
+              </tr>
+              <tr class="border-b border-white/5 transition hover:bg-white/[0.02]">
+                <td class="sticky left-0 z-10 border-r border-white/5 bg-space-card px-3 py-3 pl-4 font-sans text-slate-500">3</td>
+                <td class="px-3 py-3 font-sans font-medium text-white">TIA_USDT</td>
+                <td class="px-3 py-3 tabular-nums text-slate-200">4.52</td>
+                <td class="px-3 py-3 text-slate-300">55%</td>
+                <td class="px-3 py-3 text-slate-300">1.58</td>
+                <td class="px-3 py-3 pr-4 font-sans text-xs text-slate-400 cell-bilingual" data-ko="관망" data-en="Flat"></td>
+              </tr>
+              <tr class="border-b border-white/5 transition hover:bg-white/[0.02]">
+                <td class="sticky left-0 z-10 border-r border-white/5 bg-space-card px-3 py-3 pl-4 font-sans text-slate-500">4</td>
+                <td class="px-3 py-3 font-sans font-medium text-white/80">ARB_USDT</td>
+                <td class="px-3 py-3 tabular-nums text-slate-400">0.812</td>
+                <td class="px-3 py-3 text-amber-200/90">48%</td>
+                <td class="px-3 py-3 text-amber-200/90">1.12</td>
+                <td class="px-3 py-3 pr-4 font-sans text-xs text-amber-200/80 cell-bilingual" data-ko="숏 · 1d 전" data-en="Short · 1d ago"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="border-t border-white/5 px-4 py-3 text-center text-[11px] text-slate-500 sm:text-xs" data-i18n="preview_disclaimer"></p>
+      </div>
+    </section>
+
+    <!-- YouTube -->
+    <section id="youtube" class="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+      <h2 class="text-center text-2xl font-semibold text-white sm:text-3xl" data-i18n="yt_title"></h2>
+      <p class="mx-auto mt-3 max-w-xl text-center text-slate-400" data-i18n="yt_sub"></p>
+      <div class="mt-10 overflow-hidden rounded-2xl border border-white/10 bg-black shadow-xl">
+        <div class="flex justify-center overflow-x-auto bg-black p-4 sm:p-6">
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/K8euRnqBQ8w?si=z1NnZNgT-HtXz9rZ"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <div class="flex flex-col items-center gap-2 border-t border-white/5 px-4 py-3 sm:flex-row sm:justify-center sm:gap-4">
+          <a
+            href="https://youtu.be/K8euRnqBQ8w"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 text-sm text-moon/90 transition hover:text-moon"
+          >
+            <i class="fa-brands fa-youtube text-red-400"></i>
+            <span data-i18n="yt_open_external">YouTube에서 보기</span>
+          </a>
+          <span class="hidden text-slate-600 sm:inline" aria-hidden="true">|</span>
+          <span class="text-xs text-slate-500" data-i18n="yt_channel">youtu.be/K8euRnqBQ8w</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-white/10 bg-black/30 py-12">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col items-center justify-between gap-6 sm:flex-row">
+        <div class="flex items-center gap-2 text-slate-500">
+          <i class="fa-solid fa-moon text-moon/50"></i>
+          <span class="text-sm" data-i18n="footer_copy">© MoonBacktest. All rights reserved.</span>
+        </div>
+        <p class="max-w-md text-center text-xs leading-relaxed text-slate-500 sm:text-right" data-i18n="footer_risk"></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const STR = {
+        ko: {
+          brand: 'MoonBacktest',
+          brand_tag: '전수 백테스트 · 터미널',
+          nav_finder: 'MoonBack Finder',
+          nav_youtube: 'YouTube',
+          nav_docs: '문서',
+          lang_label: '언어',
+          hero_badge: 'MoonBack Finder · 프로 터미널',
+          hero_title: '운에 맡기지 마세요. 데이터로 \'달\'까지 가세요.',
+          hero_sub: 'MoonBack Finder는 전 세계 코인 거래소의 모든 종목을 전수 백테스트하고, RSI·변동성 등 사용자 전략을 무제한에 가깝게 시뮬레이션합니다. 지금 시점에서 수익률과 승률이 높은 후보를 데이터로 선별하고, 그 추출 결과를 바탕으로 자동매매까지 이어 갈 수 있습니다.',
+          cta_primary: 'MoonBack Finder 시작하기',
+          cta_youtube: '유튜브 검증 영상 보기',
+          how_title: '작동 방식',
+          how_sub: '스캔 → 백테스트 → 추출 → 자동매매. 선별된 종목을 실행 단계까지 연결해 데이터 기반 운영을 완성합니다.',
+          card1_title: 'Scan · 스캔',
+          card1_body: '전 세계 거래소의 실시간 데이터를 수집합니다. 동일한 기준으로 모든 종목을 비교할 수 있습니다.',
+          card2_title: 'Backtest · 백테스트',
+          card2_body: '사용자 전략(RSI, 변동성 등)을 무제한에 가깝게 시뮬레이션합니다.',
+          card3_title: 'Extract · 추출',
+          card3_body: '승률·손익비(PF) 기준으로 최적의 종목을 리스트업합니다. 핀테크 수준의 표로 한눈에 확인하세요.',
+          card4_title: 'Automate · 자동매매',
+          card4_body: '추출된 종목·시그널·리스크 규칙을 매매 엔진과 연동하면 주문·포지션 관리까지 자동으로 진행할 수 있습니다. 백테스트에서 걸러진 후보만 실거래에 반영합니다.',
+          preview_title: 'MoonBack Finder 대시보드 (미리보기)',
+          preview_sub: '실행 화면을 묘사한 데이터 테이블입니다. 코인명, 현재가, 승률(%), 손익비(PF), 최근 시그널을 예시로 보여 주며, 이 추출 결과를 바탕으로 자동매매 파이프라인으로 넘길 수 있습니다.',
+          preview_top_hint: '상위 1% 코인 강조 (데모)',
+          preview_window_title: 'MoonBack Finder',
+          preview_tag_bt: '백테스트 결과',
+          preview_disclaimer: '표의 수치는 UI 데모용 예시이며 실제 거래 신호가 아닙니다.',
+          th_rank: '#',
+          th_coin: '코인명',
+          th_price: '현재가',
+          th_win: '승률(%)',
+          th_pf: '손익비(PF)',
+          th_signal: '최근 시그널',
+          mock_top_label: '상위 1%',
+          yt_title: '검증 영상',
+          yt_sub: '아래 플레이어에서 페이지 안에서 바로 재생할 수 있습니다. 새 탭으로 보려면 하단 링크를 사용하세요.',
+          yt_open_external: 'YouTube에서 새 탭으로 열기',
+          yt_channel: 'youtu.be/K8euRnqBQ8w',
+          footer_copy: '© MoonBacktest. All rights reserved.',
+          footer_risk: '투자 책임은 본인에게 있습니다. 가상자산 거래는 높은 변동성과 손실 위험을 수반하며, 본 서비스는 투자 자문이 아닙니다.',
+        },
+        en: {
+          brand: 'MoonBacktest',
+          brand_tag: 'Full-universe backtest · Terminal',
+          nav_finder: 'MoonBack Finder',
+          nav_youtube: 'YouTube',
+          nav_docs: 'Docs',
+          lang_label: 'Language',
+          hero_badge: 'MoonBack Finder · Professional terminal',
+          hero_title: 'Stop Guessing. Start Mooning with Data.',
+          hero_sub: 'MoonBack Finder backtests every listed symbol on global crypto venues and stress-tests your rules—RSI, volatility, and more—with near-unlimited simulation. It ranks today’s strongest candidates with data—then you can feed that shortlist into automated execution.',
+          cta_primary: 'Launch MoonBack Finder',
+          cta_youtube: 'Watch on YouTube',
+          how_title: 'How it works',
+          how_sub: 'Scan → Backtest → Extract → Automate. Connect the shortlist to live execution for an end-to-end, data-driven workflow.',
+          card1_title: 'Scan',
+          card1_body: 'Collect real-time data from exchanges worldwide so every symbol is compared on the same baseline.',
+          card2_title: 'Backtest',
+          card2_body: 'Run unlimited-style simulations of your strategy—RSI, volatility filters, and beyond.',
+          card3_title: 'Extract',
+          card3_body: 'List the best names by win rate and profit factor (PF). A clean fintech-grade sheet—no fluff.',
+          card4_title: 'Automate',
+          card4_body: 'Wire extracted symbols, signals, and risk rules to your trading engine to run orders and position management automatically—only names that passed backtesting reach execution.',
+          preview_title: 'MoonBack Finder dashboard (preview)',
+          preview_sub: 'A mock of the live app: coin, last price, win %, profit factor (PF), and latest signal. That output can flow straight into an automated trading pipeline.',
+          preview_top_hint: 'Top 1% coins highlighted (demo)',
+          preview_window_title: 'MoonBack Finder',
+          preview_tag_bt: 'Backtest results',
+          preview_disclaimer: 'Figures are illustrative UI demo data—not live trading signals.',
+          th_rank: '#',
+          th_coin: 'Coin',
+          th_price: 'Price',
+          th_win: 'Win %',
+          th_pf: 'PF',
+          th_signal: 'Latest signal',
+          mock_top_label: 'Top 1%',
+          yt_title: 'Verification videos',
+          yt_sub: 'Watch inline below, or use the link to open the same video in a new tab.',
+          yt_open_external: 'Open on YouTube',
+          yt_channel: 'youtu.be/K8euRnqBQ8w',
+          footer_copy: '© MoonBacktest. All rights reserved.',
+          footer_risk: 'You are responsible for your investments. Crypto trading is risky; this is not investment advice.',
+        },
+      };
+
+      const select = document.getElementById('lang-select');
+      const root = document.getElementById('html-root');
+
+      function applyLang(lang) {
+        const bucket = STR[lang] || STR.ko;
+        document.querySelectorAll('[data-i18n]').forEach(function (el) {
+          var key = el.getAttribute('data-i18n');
+          if (key && bucket[key] !== undefined) {
+            el.textContent = bucket[key];
+          }
+        });
+        document.querySelectorAll('.cell-bilingual').forEach(function (el) {
+          var v = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-ko');
+          if (v) el.textContent = v;
+        });
+        root.setAttribute('lang', lang === 'en' ? 'en' : 'ko');
+        try {
+          localStorage.setItem('mb_lang', lang);
+        } catch (e) {}
+      }
+
+      var saved = null;
+      try {
+        saved = localStorage.getItem('mb_lang');
+      } catch (e) {}
+      if (saved === 'en' || saved === 'ko') {
+        select.value = saved;
+      }
+      applyLang(select.value);
+
+      select.addEventListener('change', function () {
+        applyLang(select.value);
+      });
+    })();
+  </script>
+</body>
+</html>
