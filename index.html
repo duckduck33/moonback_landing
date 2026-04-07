@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" id="html-root" class="scroll-smooth">
+<html lang="en" id="html-root" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -85,8 +85,8 @@
         <div class="relative">
           <i class="fa-solid fa-globe pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-500"></i>
           <select id="lang-select" class="cursor-pointer appearance-none rounded-lg border border-white/10 bg-space-card py-2 pl-9 pr-8 text-sm font-medium text-slate-200 outline-none transition hover:border-moon/30 focus:border-moon/50 focus:ring-1 focus:ring-moon/30">
-            <option value="ko">한국어</option>
             <option value="en">English</option>
+            <option value="ko">한국어</option>
           </select>
           <i class="fa-solid fa-chevron-down pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-500"></i>
         </div>
@@ -109,12 +109,19 @@
         </p>
         <h1 class="text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl" data-i18n="hero_title"></h1>
         <p class="mx-auto mt-6 max-w-2xl text-lg text-slate-400" data-i18n="hero_sub"></p>
-        <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <a href="#finder" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-moon to-amber-300 px-8 py-3.5 text-sm font-semibold text-space-deep shadow-[0_0_40px_rgba(246,224,94,0.25)] transition hover:brightness-110 sm:w-auto">
-            <i class="fa-solid fa-rocket"></i>
-            <span data-i18n="cta_primary"></span>
-          </a>
-          <a href="#youtube" class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-8 py-3.5 text-sm font-semibold text-white backdrop-blur transition hover:border-moon/40 hover:bg-white/10 sm:w-auto">
+        <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:items-start">
+          <div class="flex w-full flex-col items-center sm:w-auto">
+            <a
+              id="cta-primary-download"
+              href="https://drive.google.com/uc?export=download&amp;id=1xpd4HJT-gr2MtNjqPgDweM1X-SJPwq1L"
+              class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-moon to-amber-300 px-8 py-3.5 text-sm font-semibold text-space-deep shadow-[0_0_40px_rgba(246,224,94,0.25)] transition hover:brightness-110 sm:w-auto"
+            >
+              <i class="fa-solid fa-rocket"></i>
+              <span data-i18n="cta_primary"></span>
+            </a>
+            <p class="mt-3 text-center text-[11px] font-medium text-slate-500" data-i18n="download_notice"></p>
+          </div>
+          <a href="#youtube" class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-8 py-3.5 text-sm font-semibold text-white backdrop-blur transition hover:border-moon/40 hover:bg-white/10 sm:mt-0 sm:w-auto">
             <i class="fa-brands fa-youtube text-red-400"></i>
             <span data-i18n="cta_youtube"></span>
           </a>
@@ -298,6 +305,8 @@
           hero_sub: 'MoonBack Finder는 전 세계 코인 거래소의 모든 종목을 전수 백테스트하고, RSI·변동성 등 사용자 전략을 무제한에 가깝게 시뮬레이션합니다. 지금 시점에서 수익률과 승률이 높은 후보를 데이터로 선별하고, 그 추출 결과를 바탕으로 자동매매까지 이어 갈 수 있습니다.',
           cta_primary: 'MoonBack Finder 시작하기',
           cta_youtube: '유튜브 검증 영상 보기',
+          download_notice: '※ 압축 해제 비밀번호: TO_THE_MOON',
+          download_confirm: 'ZIP 다운로드를 시작할까요? 확인을 누르면 Google Drive에서 파일을 받습니다.',
           how_title: '작동 방식',
           how_sub: '스캔 → 백테스트 → 추출 → 자동매매. 선별된 종목을 실행 단계까지 연결해 데이터 기반 운영을 완성합니다.',
           card1_title: 'Scan · 스캔',
@@ -340,6 +349,8 @@
           hero_sub: 'MoonBack Finder backtests every listed symbol on global crypto venues and stress-tests your rules—RSI, volatility, and more—with near-unlimited simulation. It ranks today’s strongest candidates with data—then you can feed that shortlist into automated execution.',
           cta_primary: 'Launch MoonBack Finder',
           cta_youtube: 'Watch on YouTube',
+          download_notice: '※ Extraction password: TO_THE_MOON',
+          download_confirm: 'Start downloading the ZIP? OK will fetch the file from Google Drive.',
           how_title: 'How it works',
           how_sub: 'Scan → Backtest → Extract → Automate. Connect the shortlist to live execution for an end-to-end, data-driven workflow.',
           card1_title: 'Scan',
@@ -374,9 +385,11 @@
 
       const select = document.getElementById('lang-select');
       const root = document.getElementById('html-root');
+      const ctaDownload = document.getElementById('cta-primary-download');
+      const DOWNLOAD_URL = 'https://drive.google.com/uc?export=download&id=1xpd4HJT-gr2MtNjqPgDweM1X-SJPwq1L';
 
       function applyLang(lang) {
-        const bucket = STR[lang] || STR.ko;
+        const bucket = STR[lang] || STR.en;
         document.querySelectorAll('[data-i18n]').forEach(function (el) {
           var key = el.getAttribute('data-i18n');
           if (key && bucket[key] !== undefined) {
@@ -397,14 +410,27 @@
       try {
         saved = localStorage.getItem('mb_lang');
       } catch (e) {}
-      if (saved === 'en' || saved === 'ko') {
-        select.value = saved;
-      }
+      select.value = saved === 'en' || saved === 'ko' ? saved : 'en';
       applyLang(select.value);
 
       select.addEventListener('change', function () {
         applyLang(select.value);
       });
+
+      if (ctaDownload) {
+        ctaDownload.addEventListener('click', function (e) {
+          e.preventDefault();
+          var lang = select.value;
+          var bucket = STR[lang] || STR.en;
+          var msg = bucket.download_confirm || '';
+          if (window.confirm(msg)) {
+            window.location.href = DOWNLOAD_URL;
+          } else {
+            var yt = document.getElementById('youtube');
+            if (yt) yt.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      }
     })();
   </script>
 </body>
