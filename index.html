@@ -113,7 +113,7 @@
           <div class="flex w-full flex-col items-center sm:w-auto">
             <a
               id="cta-primary-download"
-              href="https://drive.google.com/uc?export=download&amp;id=1xpd4HJT-gr2MtNjqPgDweM1X-SJPwq1L"
+              href="https://github.com/duckduck33/moonback_landing/releases/download/v1.0.0/MoonBackFinder.zip"
               class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-moon to-amber-300 px-8 py-3.5 text-sm font-semibold text-space-deep shadow-[0_0_40px_rgba(246,224,94,0.25)] transition hover:brightness-110 sm:w-auto"
             >
               <i class="fa-solid fa-rocket"></i>
@@ -301,12 +301,12 @@
           nav_docs: '문서',
           lang_label: '언어',
           hero_badge: 'MoonBack Finder · 프로 터미널',
-          hero_title: '운에 맡기지 마세요. 데이터로 \'달\'까지 가세요.',
+          hero_title: '백테스팅으로 확신을 얻고, 수익을 \'달\'까지 보내세요',
           hero_sub: 'MoonBack Finder는 전 세계 코인 거래소의 모든 종목을 전수 백테스트하고, RSI·변동성 등 사용자 전략을 무제한에 가깝게 시뮬레이션합니다. 지금 시점에서 수익률과 승률이 높은 후보를 데이터로 선별하고, 그 추출 결과를 바탕으로 자동매매까지 이어 갈 수 있습니다.',
-          cta_primary: 'MoonBack Finder 시작하기',
-          cta_youtube: '유튜브 검증 영상 보기',
-          download_notice: '※ 압축 해제 비밀번호: TO_THE_MOON',
-          download_confirm: 'ZIP 다운로드를 시작할까요? 확인을 누르면 Google Drive에서 파일을 받습니다.',
+          cta_primary: '프로그램 다운로드 하기',
+          cta_youtube: '가이드영상보고 비밀번호 얻기',
+          download_notice: '※ 압축 해제 비밀번호는 가이드 영상에서 확인할 수 있습니다.',
+          download_confirm: '가이드 영상에서 비밀번호를 확인하셨나요? 확인을 누르면 다운로드가 시작됩니다.',
           how_title: '작동 방식',
           how_sub: '스캔 → 백테스트 → 추출 → 자동매매. 선별된 종목을 실행 단계까지 연결해 데이터 기반 운영을 완성합니다.',
           card1_title: 'Scan · 스캔',
@@ -330,8 +330,8 @@
           th_pf: '손익비(PF)',
           th_signal: '최근 시그널',
           mock_top_label: '상위 1%',
-          yt_title: '검증 영상',
-          yt_sub: '아래 플레이어에서 페이지 안에서 바로 재생할 수 있습니다. 새 탭으로 보려면 하단 링크를 사용하세요.',
+          yt_title: '프로그램 가이드영상 보기',
+          yt_sub: '프로그램 압축해제 비번은 아래 프로그램 가이드영상에 있습니다. 가이드 영상은 문백테스트 채널 구독자만 볼 수 있으니 꼭 구독과 좋아요 해주세요.',
           yt_open_external: 'YouTube에서 새 탭으로 열기',
           yt_channel: 'youtu.be/K8euRnqBQ8w',
           footer_copy: '© MoonBacktest. All rights reserved.',
@@ -347,10 +347,10 @@
           hero_badge: 'MoonBack Finder · Professional terminal',
           hero_title: 'Stop Guessing. Start Mooning with Data.',
           hero_sub: 'MoonBack Finder backtests every listed symbol on global crypto venues and stress-tests your rules—RSI, volatility, and more—with near-unlimited simulation. It ranks today’s strongest candidates with data—then you can feed that shortlist into automated execution.',
-          cta_primary: 'Launch MoonBack Finder',
-          cta_youtube: 'Watch on YouTube',
-          download_notice: '※ Extraction password: TO_THE_MOON',
-          download_confirm: 'Start downloading the ZIP? OK will fetch the file from Google Drive.',
+          cta_primary: 'Download program',
+          cta_youtube: 'Watch guide video for password',
+          download_notice: '※ The extraction password is provided in the guide video.',
+          download_confirm: 'Did you get the password from the guide video? Click OK to start the download.',
           how_title: 'How it works',
           how_sub: 'Scan → Backtest → Extract → Automate. Connect the shortlist to live execution for an end-to-end, data-driven workflow.',
           card1_title: 'Scan',
@@ -374,8 +374,8 @@
           th_pf: 'PF',
           th_signal: 'Latest signal',
           mock_top_label: 'Top 1%',
-          yt_title: 'Verification videos',
-          yt_sub: 'Watch inline below, or use the link to open the same video in a new tab.',
+          yt_title: 'Program guide video',
+          yt_sub: 'The archive password is in the program guide video below. That video is for MoonBacktest channel subscribers only—please subscribe and leave a like.',
           yt_open_external: 'Open on YouTube',
           yt_channel: 'youtu.be/K8euRnqBQ8w',
           footer_copy: '© MoonBacktest. All rights reserved.',
@@ -386,7 +386,8 @@
       const select = document.getElementById('lang-select');
       const root = document.getElementById('html-root');
       const ctaDownload = document.getElementById('cta-primary-download');
-      const DOWNLOAD_URL = 'https://drive.google.com/uc?export=download&id=1xpd4HJT-gr2MtNjqPgDweM1X-SJPwq1L';
+      const DOWNLOAD_URL =
+        'https://github.com/duckduck33/moonback_landing/releases/download/v1.0.0/MoonBackFinder.zip';
 
       function applyLang(lang) {
         const bucket = STR[lang] || STR.en;
