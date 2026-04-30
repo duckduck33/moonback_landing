@@ -395,9 +395,8 @@
       const downloadClickCount = document.getElementById('download-click-count');
       const DOWNLOAD_URL =
         'https://github.com/duckduck33/moonback_landing/releases/latest/download/MoonBackFinder.zip';
-      const CLICK_COUNTER_URL = 'https://api.countapi.xyz';
-      const CLICK_COUNTER_NS = 'moonback_landing';
-      const CLICK_COUNTER_KEY = 'download_clicks_v1';
+      const CLICK_COUNTER_URL = 'https://api.counterapi.dev/v1/moonback';
+      const CLICK_COUNTER_KEY = 'download';
 
       function applyLang(lang) {
         const bucket = STR[lang] || STR.en;
@@ -431,10 +430,10 @@
       async function fetchClickCount() {
         if (!downloadClickCount) return;
         try {
-          const res = await fetch(CLICK_COUNTER_URL + '/get/' + CLICK_COUNTER_NS + '/' + CLICK_COUNTER_KEY, { cache: 'no-store' });
+          const res = await fetch(CLICK_COUNTER_URL + '/' + CLICK_COUNTER_KEY, { cache: 'no-store' });
           if (!res.ok) throw new Error('count get failed');
           const data = await res.json();
-          downloadClickCount.textContent = typeof data.value === 'number' ? String(data.value) : '-';
+          downloadClickCount.textContent = typeof data.count === 'number' ? String(data.count) : '-';
         } catch (e) {
           downloadClickCount.textContent = '-';
         }
@@ -442,11 +441,11 @@
 
       async function incrementClickCount() {
         try {
-          const res = await fetch(CLICK_COUNTER_URL + '/hit/' + CLICK_COUNTER_NS + '/' + CLICK_COUNTER_KEY, { cache: 'no-store' });
+          const res = await fetch(CLICK_COUNTER_URL + '/' + CLICK_COUNTER_KEY + '/up', { cache: 'no-store' });
           if (!res.ok) throw new Error('count hit failed');
           const data = await res.json();
-          if (downloadClickCount && typeof data.value === 'number') {
-            downloadClickCount.textContent = String(data.value);
+          if (downloadClickCount && typeof data.count === 'number') {
+            downloadClickCount.textContent = String(data.count);
           }
         } catch (e) {}
       }
