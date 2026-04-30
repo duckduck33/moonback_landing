@@ -395,8 +395,29 @@
       const downloadClickCount = document.getElementById('download-click-count');
       const DOWNLOAD_URL =
         'https://github.com/duckduck33/moonback_landing/releases/latest/download/MoonBackFinder.zip';
-      const CLICK_COUNTER_URL = 'https://api.counterapi.dev/v1/moonback';
-      const CLICK_COUNTER_KEY = 'download';
+      const COUNTER_API_URL = '/api/counter';
+      const CLICK_COUNTER_CACHE_KEY = 'mb_download_click_count';
+
+      function setClickCount(value) {
+        if (!downloadClickCount || typeof value !== 'number' || Number.isNaN(value)) return;
+        downloadClickCount.textContent = String(value);
+        try {
+          localStorage.setItem(CLICK_COUNTER_CACHE_KEY, String(value));
+        } catch (e) {}
+      }
+
+      function loadCachedClickCount() {
+        if (!downloadClickCount) return;
+        try {
+          const raw = localStorage.getItem(CLICK_COUNTER_CACHE_KEY);
+          const parsed = Number(raw);
+          if (!Number.isNaN(parsed) && parsed >= 0) {
+            downloadClickCount.textContent = String(parsed);
+            return;
+          }
+        } catch (e) {}
+        downloadClickCount.textContent = '0';
+      }
 
       function applyLang(lang) {
         const bucket = STR[lang] || STR.en;
@@ -430,26 +451,37 @@
       async function fetchClickCount() {
         if (!downloadClickCount) return;
         try {
-          const res = await fetch(CLICK_COUNTER_URL + '/' + CLICK_COUNTER_KEY, { cache: 'no-store' });
+          const res = await fetch(COUNTER_API_URL, { cache: 'no-store' });
           if (!res.ok) throw new Error('count get failed');
           const data = await res.json();
-          downloadClickCount.textContent = typeof data.count === 'number' ? String(data.count) : '-';
+          if (typeof data.count === 'number') {
+            setClickCount(data.count);
+          }
         } catch (e) {
-          downloadClickCount.textContent = '-';
+          // Keep the last cached value when network/API fails.
         }
       }
 
       async function incrementClickCount() {
         try {
-          const res = await fetch(CLICK_COUNTER_URL + '/' + CLICK_COUNTER_KEY + '/up', { cache: 'no-store' });
+          const res = await fetch(COUNTER_API_URL, { method: 'POST', cache: 'no-store' });
           if (!res.ok) throw new Error('count hit failed');
           const data = await res.json();
-          if (downloadClickCount && typeof data.count === 'number') {
-            downloadClickCount.textContent = String(data.count);
+          if (typeof data.count === 'number') {
+            setClickCount(data.count);
           }
-        } catch (e) {}
+        } catch (e) {
+          try {
+            const raw = localStorage.getItem(CLICK_COUNTER_CACHE_KEY);
+            const parsed = Number(raw);
+            if (!Number.isNaN(parsed)) {
+              setClickCount(parsed + 1);
+            }
+          } catch (err) {}
+        }
       }
 
+      loadCachedClickCount();
       fetchClickCount();
 
       if (ctaDownload) {
