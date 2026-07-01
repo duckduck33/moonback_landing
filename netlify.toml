@@ -7,3 +7,8 @@
   to = "/.netlify/functions/counter"
   status = 200
   force = true
+
+[[headers]]
+  for = "/download/*"
+  [headers.values]
+    Content-Disposition = "attachment"
