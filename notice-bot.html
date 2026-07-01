@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>업비트빗썸 공지사항 매매봇 | 국내 공지 기반 해외 선물 자동매매</title>
+  <meta name="description" content="업비트·빗썸 거래소 공지만 봐도 최근 한달 백테스트 +80.26%. 백테스트 무료, 실전 매매 프리미엄." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Noto Sans KR', 'Segoe UI', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Consolas', 'ui-monospace', 'monospace'],
+          },
+          colors: {
+            navy: { DEFAULT: '#1a2744', deep: '#121b2e', card: '#243352' },
+            ink: '#f0f4fa',
+            muted: '#9aadcc',
+            accent: '#3d6fd6',
+            profit: '#34d399',
+            loss: '#f87171',
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="min-h-screen bg-navy text-ink antialiased selection:bg-accent/30 selection:text-white">
+  <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+    <div class="absolute -left-24 top-0 h-[400px] w-[400px] rounded-full bg-accent/10 blur-[100px]"></div>
+    <div class="absolute right-0 top-1/3 h-[320px] w-[320px] rounded-full bg-profit/5 blur-[90px]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_100%_60%_at_50%_-20%,rgba(61,111,214,0.15),transparent_50%)]"></div>
+  </div>
+
+  <header class="sticky top-0 z-50 border-b border-white/5 bg-navy/90 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+      <a href="notice-bot.html" class="group flex items-center gap-2.5">
+        <span class="flex h-10 w-10 items-center justify-center rounded-xl border border-accent/30 bg-accent/10 text-accent transition group-hover:border-accent/50">
+          <i class="fa-solid fa-bullhorn text-lg"></i>
+        </span>
+        <div class="flex flex-col leading-tight">
+          <span class="text-sm font-semibold text-white">공지사항 매매봇</span>
+          <span class="text-[11px] font-medium text-muted">업비트 · 빗썸 → 해외 선물</span>
+        </div>
+      </a>
+      <nav class="flex items-center gap-1 rounded-xl border border-white/10 bg-navy-card/60 p-1">
+        <a href="index.html" class="rounded-lg px-4 py-2 text-sm font-medium text-muted transition hover:text-white">MoonBack Finder</a>
+        <a href="notice-bot.html" class="rounded-lg bg-accent/20 px-4 py-2 text-sm font-semibold text-white ring-1 ring-accent/40">공지사항 매매봇</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="mx-auto max-w-7xl px-4 pb-16 pt-16 sm:px-6 sm:pt-24 lg:px-8">
+      <div class="mx-auto max-w-3xl text-center">
+        <p class="mb-4 inline-flex items-center gap-2 rounded-full border border-profit/30 bg-profit/10 px-4 py-1.5 text-xs font-semibold text-profit">
+          <i class="fa-solid fa-chart-line text-[10px]"></i>
+          최근 1개월 백테스트 +80.26%
+        </p>
+        <h1 class="text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+          거래소 공지만 봐도,<br class="sm:hidden" />
+          <span class="text-profit">한 달 수익률 80%</span>
+        </h1>
+        <p class="mx-auto mt-6 max-w-xl text-lg text-muted">
+          업비트·빗썸 거래유의·상장 공지를 따라 해외 선물까지 자동 매매합니다.
+          <strong class="text-ink">백테스트는 무료</strong> — 직접 돌려보고 결정하세요.
+        </p>
+        <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a href="#process" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-8 py-3.5 text-sm font-semibold text-white shadow-[0_0_40px_rgba(61,111,214,0.3)] transition hover:brightness-110 sm:w-auto">
+            <i class="fa-solid fa-desktop"></i>
+            실제 프로그램 화면
+          </a>
+          <a href="#gallery" class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-8 py-3.5 text-sm font-semibold text-white transition hover:border-accent/40 hover:bg-white/10 sm:w-auto">
+            <i class="fa-solid fa-images"></i>
+            백테스트 차트 보기
+          </a>
+        </div>
+        <p class="mt-6 text-xs text-muted/70">+80.26%는 과거 1개월 백테스트 합산 · 미래 수익 보장 아님</p>
+      </div>
+
+      <div class="mx-auto mt-14 grid max-w-4xl gap-4 sm:grid-cols-3">
+        <article class="rounded-2xl border border-white/10 bg-navy-card/60 p-6 text-center">
+          <div class="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-accent/15 text-accent">
+            <i class="fa-solid fa-bullhorn"></i>
+          </div>
+          <h3 class="text-sm font-semibold text-white">공지 감지</h3>
+          <p class="mt-2 text-xs text-muted">거래유의·상장, 놓치지 않음</p>
+        </article>
+        <article class="rounded-2xl border border-profit/30 bg-profit/5 p-6 text-center">
+          <div class="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-profit/15 text-profit">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+          <h3 class="text-sm font-semibold text-white">한달 +80.26%</h3>
+          <p class="mt-2 text-xs text-muted">최근 1개월 백테스트 합산</p>
+        </article>
+        <article class="rounded-2xl border border-white/10 bg-navy-card/60 p-6 text-center sm:col-span-1 col-span-full max-w-sm mx-auto sm:max-w-none">
+          <div class="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-violet-400/15 text-violet-300">
+            <i class="fa-solid fa-flask"></i>
+          </div>
+          <h3 class="text-sm font-semibold text-white">백테스트 무료</h3>
+          <p class="mt-2 text-xs text-muted">실전 전, 과거 공지로 검증</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Program screenshots -->
+    <section id="process" class="border-t border-white/5 py-16">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <h2 class="text-2xl font-bold text-white sm:text-3xl">실제 프로그램 화면</h2>
+          <p class="mt-2 text-sm text-muted">
+            클릭하면 크게 볼 수 있어요.
+          </p>
+        </div>
+        <div id="process-grid" class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"></div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="features" class="border-t border-white/5 bg-navy-deep/50 py-16">
+      <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-bold text-white sm:text-3xl">이렇게 씁니다</h2>
+        <p class="mt-3 text-muted">복잡한 설정 없이, 세 단계면 충분합니다.</p>
+        <ol class="mt-10 space-y-6 text-left">
+          <li class="flex gap-4 rounded-2xl border border-white/10 bg-navy-card/60 p-5">
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent/20 text-sm font-bold text-accent">1</span>
+            <div>
+              <p class="font-semibold text-white">무료로 백테스트</p>
+              <p class="mt-1 text-sm text-muted">과거 공지 데이터로 전략이 통하는지 먼저 확인</p>
+            </div>
+          </li>
+          <li class="flex gap-4 rounded-2xl border border-white/10 bg-navy-card/60 p-5">
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent/20 text-sm font-bold text-accent">2</span>
+            <div>
+              <p class="font-semibold text-white">마음에 들면 프리미엄</p>
+              <p class="mt-1 text-sm text-muted">실시간 감시 + Live 자동매매 + 텔레그램 알림</p>
+            </div>
+          </li>
+          <li class="flex gap-4 rounded-2xl border border-white/10 bg-navy-card/60 p-5">
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent/20 text-sm font-bold text-accent">3</span>
+            <div>
+              <p class="font-semibold text-white">공지 뜨면 봇이 알아서</p>
+              <p class="mt-1 text-sm text-muted">직접 화면 안 봐도 진입·청산 진행</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Backtest results -->
+    <section id="backtest" class="border-t border-white/5 bg-navy-deep/50 py-16">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <h2 class="text-2xl font-bold text-white sm:text-3xl">과거 공지도 이렇게 먹혔습니다</h2>
+          <p class="mx-auto mt-3 max-w-lg text-muted">
+            차트로 한 건 한 건 확인하세요. <strong class="text-profit">백테스트는 무료</strong>입니다.
+          </p>
+        </div>
+
+        <div id="gallery" class="mt-10">
+          <div id="gallery-grid" class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3"></div>
+          <p class="mt-6 text-center text-xs text-muted">과거 결과이며 미래 수익을 보장하지 않습니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery lightbox -->
+    <div id="gallery-lightbox" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="이미지 확대 보기">
+      <button type="button" id="gallery-close" class="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-navy-card/80 text-white transition hover:bg-white/10" aria-label="닫기">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <button type="button" id="gallery-prev" class="absolute left-3 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-navy-card/80 text-white transition hover:bg-white/10 sm:left-6 sm:flex" aria-label="이전">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+      <button type="button" id="gallery-next" class="absolute right-3 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-navy-card/80 text-white transition hover:bg-white/10 sm:right-6 sm:flex" aria-label="다음">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+      <div class="flex max-h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-navy-card shadow-2xl">
+        <div class="border-b border-white/10 px-4 py-3 sm:px-5">
+          <p id="lightbox-title" class="text-sm font-semibold text-white sm:text-base"></p>
+          <p id="lightbox-meta" class="mt-1 text-xs text-muted"></p>
+        </div>
+        <div class="overflow-auto bg-[#0d1424] p-2 sm:p-4">
+          <img id="lightbox-image" src="" alt="" class="mx-auto max-h-[70vh] w-full object-contain" loading="lazy" />
+        </div>
+        <div class="flex items-center justify-between gap-3 border-t border-white/10 px-4 py-3 text-xs text-muted sm:px-5">
+          <span id="lightbox-index"></span>
+          <span class="text-right">ESC · ← →</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing -->
+    <section id="pricing" class="py-16">
+      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <h2 class="text-2xl font-bold text-white sm:text-3xl">요금</h2>
+          <p class="mt-3 text-muted">부담 없이 시작하세요.</p>
+        </div>
+
+        <div class="mt-10 grid gap-6 sm:grid-cols-2">
+          <article class="rounded-2xl border border-profit/25 bg-navy-card/80 p-7">
+            <p class="text-sm font-semibold text-profit">무료</p>
+            <p class="mt-2 text-3xl font-bold text-white">₩0</p>
+            <p class="mt-4 text-sm text-muted">백테스트 전부 무료<br />과거 공지로 전략 검증</p>
+            <a href="#gallery" class="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-profit/30 bg-profit/10 py-3 text-sm font-semibold text-profit transition hover:bg-profit/15">
+              결과 먼저 보기
+            </a>
+          </article>
+
+          <article class="rounded-2xl border border-amber-400/30 bg-gradient-to-b from-amber-400/10 to-navy-card/80 p-7">
+            <p class="text-sm font-semibold text-amber-300">프리미엄</p>
+            <p class="mt-2 text-3xl font-bold text-white">₩190,000</p>
+            <p class="mt-1 text-xs text-muted">또는 Bitget 레퍼럴 가입</p>
+            <p class="mt-4 text-sm text-muted">실시간 감시 · Live 자동매매 · 텔레그램 알림</p>
+            <a href="https://t.me/duccking" target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-amber-400 py-3 text-sm font-semibold text-navy-deep transition hover:brightness-110">
+              <i class="fa-brands fa-telegram"></i>
+              프리미엄 문의
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Custom bot development -->
+    <section id="custom-dev" class="border-t border-white/5 bg-navy-deep/50 py-16">
+      <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+        <p class="inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-3 py-1 text-xs font-semibold text-violet-300">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          맞춤 개발
+        </p>
+        <h2 class="mt-5 text-2xl font-bold text-white sm:text-3xl">내 전략 그대로, 나만의 봇</h2>
+        <p class="mx-auto mt-4 max-w-lg text-muted">
+          공지 봇 말고 <strong class="text-ink">본인 전략 전용 봇</strong>이 필요하신가요?
+          맞춤 개발 상담 받습니다.
+        </p>
+        <p class="mt-6 text-3xl font-bold text-white">₩100만 ~ ₩300만</p>
+        <p class="mt-2 text-sm text-muted">난이도에 따라 책정 · 상담 후 견적</p>
+        <a href="https://t.me/duccking" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-violet-500 px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-violet-400">
+          <i class="fa-brands fa-telegram"></i>
+          맞춤 봇 상담 (@duccking)
+        </a>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-16">
+      <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
+        <h2 class="text-center text-2xl font-bold text-white">궁금한 점</h2>
+        <dl class="mt-10 space-y-4">
+          <div class="rounded-xl border border-white/10 bg-navy-card/60 p-5">
+            <dt class="font-semibold text-white">백테스트 정말 무료인가요?</dt>
+            <dd class="mt-2 text-sm text-muted">네. 마음에 들면 그때 프리미엄(실전 매매) 신청하시면 됩니다.</dd>
+          </div>
+          <div class="rounded-xl border border-white/10 bg-navy-card/60 p-5">
+            <dt class="font-semibold text-white">프리미엄은 어떻게 하나요?</dt>
+            <dd class="mt-2 text-sm text-muted">Bitget 레퍼럴 가입 또는 19만원. 텔레그램 <a href="https://t.me/duccking" class="text-accent hover:underline">@duccking</a>으로 문의.</dd>
+          </div>
+          <div class="rounded-xl border border-white/10 bg-navy-card/60 p-5">
+            <dt class="font-semibold text-white">수익 보장되나요?</dt>
+            <dd class="mt-2 text-sm text-muted">아니요. 투자 책임은 본인에게 있습니다.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="border-t border-white/5 py-16">
+      <div class="mx-auto max-w-xl px-4 text-center sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-bold text-white">시작이 궁금하면</h2>
+        <p class="mt-3 text-muted">텔레그램으로 편하게 물어보세요.</p>
+        <a href="https://t.me/duccking" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#229ED9] px-8 py-3.5 text-sm font-semibold text-white transition hover:brightness-110">
+          <i class="fa-brands fa-telegram text-lg"></i>
+          @duccking
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-white/10 bg-black/20 py-8">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <p class="text-center text-xs text-muted">
+        투자 권유·수익 보장 아님 · 손실 책임은 본인 · 빗썸·업비트·거래소와 무관한 비공식 도구
+      </p>
+      <div class="mt-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
+        <p class="text-sm text-muted">© 공지사항 매매봇</p>
+        <a href="index.html" class="text-sm text-accent hover:underline">MoonBack Finder →</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var BACKTEST_ITEMS = [
+        {
+          src: 'gallary/backtest/20260627_215044.png',
+          coin: 'TAIKO',
+          exchange: 'Bitget',
+          strategy: '거래유의',
+          return: '+8.03%',
+          notice: '빗썸+업비트 거래유의종목 지정',
+          date: '06-22 14:00',
+        },
+        {
+          src: 'gallary/backtest/20260627_215053.png',
+          coin: 'AERGO',
+          exchange: 'Bybit',
+          strategy: '거래유의',
+          return: '+20.00%',
+          notice: '업비트 거래 유의 종목 지정',
+          date: '06-18 16:30',
+        },
+        {
+          src: 'gallary/backtest/20260627_215103.png',
+          coin: 'H',
+          exchange: 'Bitget',
+          strategy: '거래유의',
+          return: '+6.20%',
+          notice: '빗썸 휴머니티(H) 거래유의종목 지정',
+          date: '06-22 17:00',
+        },
+        {
+          src: 'gallary/backtest/20260627_215124.png',
+          coin: 'RE',
+          exchange: 'Bitget',
+          strategy: '상장',
+          return: '롱 +20.00% · 숏 +11.91%',
+          notice: '업비트 RE 신규 거래지원',
+          date: '06-19 18:00',
+        },
+        {
+          src: 'gallary/backtest/20260627_215135.png',
+          coin: 'RE',
+          exchange: 'Bitget',
+          strategy: '상장',
+          return: '롱 +1.50%~+10.15% · 숏 +6.87%',
+          notice: '빗썸 리프로토콜(RE) 원화 마켓 추가',
+          date: '06-19 18:00',
+        },
+        {
+          src: 'gallary/backtest/20260627_215152.png',
+          coin: 'SPX',
+          exchange: 'Bitget',
+          strategy: '상장',
+          return: '롱 +6.52%~+20.00% · 숏 +2.79%',
+          notice: '업비트 SPX6900(SPX) 신규 거래지원',
+          date: '06-16 11:12',
+        },
+      ];
+
+      var PROCESS_FALLBACK = [
+        { src: 'gallary/process/20260701_172114.png', title: '한달 백테스트 결과', description: '18건 합산 수익률 +80.26% · 무료로 직접 확인 가능', badge: '무료', highlight: '+80.26%' },
+        { src: 'gallary/process/20260701_172013.png', title: '기본 백테스트', description: '전략·기간 한 번에 설정하고 분석 시작', badge: '무료' },
+        { src: 'gallary/process/20260701_171951.png', title: '실시간 감시', description: '공지 감지부터 Live 자동매매까지', badge: '프리미엄' },
+      ];
+
+      var backtestGrid = document.getElementById('gallery-grid');
+      var processGrid = document.getElementById('process-grid');
+      var lightbox = document.getElementById('gallery-lightbox');
+      var lightboxImage = document.getElementById('lightbox-image');
+      var lightboxTitle = document.getElementById('lightbox-title');
+      var lightboxMeta = document.getElementById('lightbox-meta');
+      var lightboxIndex = document.getElementById('lightbox-index');
+      var btnClose = document.getElementById('gallery-close');
+      var btnPrev = document.getElementById('gallery-prev');
+      var btnNext = document.getElementById('gallery-next');
+
+      var activeItems = [];
+      var activeIndex = -1;
+
+      function strategyBadgeClass(strategy) {
+        return strategy === '상장'
+          ? 'border-profit/30 bg-profit/10 text-profit'
+          : 'border-loss/30 bg-loss/10 text-loss';
+      }
+
+      function processBadgeClass(badge) {
+        return badge === '무료'
+          ? 'border-profit/30 bg-profit/10 text-profit'
+          : 'border-amber-400/30 bg-amber-400/10 text-amber-300';
+      }
+
+      function renderBacktestGrid() {
+        if (!backtestGrid) return;
+        backtestGrid.innerHTML = BACKTEST_ITEMS.map(function (item, index) {
+          return (
+            '<button type="button" class="gallery-card group overflow-hidden rounded-2xl border border-white/10 bg-navy-card/80 text-left transition hover:border-accent/40 hover:shadow-[0_0_40px_rgba(61,111,214,0.12)]" data-gallery="backtest" data-index="' + index + '">' +
+              '<div class="relative aspect-[16/10] overflow-hidden bg-[#0d1424]">' +
+                '<img src="' + item.src + '" alt="' + item.coin + ' ' + item.strategy + ' 백테스트 차트" class="h-full w-full object-cover object-top transition duration-300 group-hover:scale-[1.02]" loading="lazy" />' +
+                '<span class="absolute right-3 top-3 rounded-lg bg-black/70 px-2 py-1 text-[10px] font-semibold text-white backdrop-blur">' + item.return + '</span>' +
+              '</div>' +
+              '<div class="space-y-2 p-4">' +
+                '<div class="flex flex-wrap items-center gap-2">' +
+                  '<span class="font-mono text-sm font-semibold text-white">' + item.coin + '</span>' +
+                  '<span class="rounded-md border px-2 py-0.5 text-[10px] font-medium ' + strategyBadgeClass(item.strategy) + '">' + item.strategy + '</span>' +
+                  '<span class="text-[10px] text-muted">' + item.exchange + '</span>' +
+                '</div>' +
+                '<p class="line-clamp-2 text-xs leading-relaxed text-muted">' + item.notice + '</p>' +
+              '</div>' +
+            '</button>'
+          );
+        }).join('');
+      }
+
+      function renderProcessGrid(items) {
+        if (!processGrid) return;
+        if (!items.length) {
+          processGrid.innerHTML = '';
+          return;
+        }
+        processGrid.innerHTML = items.map(function (item, index) {
+          var badge = item.badge || '';
+          var highlight = item.highlight || '';
+          var cardClass = highlight
+            ? 'gallery-card group overflow-hidden rounded-2xl border border-profit/40 bg-navy-card/80 text-left ring-1 ring-profit/20 transition hover:border-profit/60 hover:shadow-[0_0_40px_rgba(52,211,153,0.15)]'
+            : 'gallery-card group overflow-hidden rounded-2xl border border-white/10 bg-navy-card/80 text-left transition hover:border-accent/40 hover:shadow-[0_0_40px_rgba(61,111,214,0.12)]';
+          return (
+            '<button type="button" class="' + cardClass + '" data-gallery="process" data-index="' + index + '">' +
+              '<div class="relative aspect-[16/10] overflow-hidden bg-[#0d1424]">' +
+                '<img src="' + item.src + '" alt="' + item.title + ' 화면" class="h-full w-full object-cover object-top transition duration-300 group-hover:scale-[1.02]" loading="lazy" />' +
+                (highlight ? '<span class="absolute right-3 top-3 rounded-lg bg-profit/90 px-2.5 py-1 text-xs font-bold text-navy-deep backdrop-blur">' + highlight + '</span>' : '') +
+                (!highlight && badge ? '<span class="absolute right-3 top-3 rounded-lg border px-2 py-1 text-[10px] font-semibold backdrop-blur ' + processBadgeClass(badge) + '">' + badge + '</span>' : '') +
+              '</div>' +
+              '<div class="space-y-2 p-4">' +
+                '<h3 class="text-sm font-semibold text-white">' + item.title + '</h3>' +
+                '<p class="line-clamp-2 text-xs leading-relaxed text-muted">' + item.description + '</p>' +
+              '</div>' +
+            '</button>'
+          );
+        }).join('');
+      }
+
+      function openLightbox(gallery, index) {
+        var items = gallery === 'backtest' ? BACKTEST_ITEMS : window.__processItems || [];
+        var item = items[index];
+        if (!item || !lightbox) return;
+        activeItems = items;
+        activeIndex = index;
+        lightboxImage.src = item.src;
+        if (gallery === 'backtest') {
+          lightboxImage.alt = item.coin + ' ' + item.strategy + ' 백테스트 차트';
+          lightboxTitle.textContent = item.coin + ' @ ' + item.exchange + ' · ' + item.strategy + '전략';
+          lightboxMeta.textContent = item.notice + ' · ' + item.date + ' · ' + item.return;
+        } else {
+          lightboxImage.alt = item.title + ' 화면';
+          lightboxTitle.textContent = item.title;
+          lightboxMeta.textContent = (item.badge ? item.badge + ' · ' : '') + item.description;
+        }
+        lightboxIndex.textContent = (index + 1) + ' / ' + items.length;
+        lightbox.classList.remove('hidden');
+        lightbox.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        if (!lightbox) return;
+        lightbox.classList.add('hidden');
+        lightbox.classList.remove('flex');
+        lightboxImage.src = '';
+        activeItems = [];
+        activeIndex = -1;
+        document.body.style.overflow = '';
+      }
+
+      function showRelative(step) {
+        if (activeIndex < 0 || !activeItems.length) return;
+        var next = (activeIndex + step + activeItems.length) % activeItems.length;
+        openLightbox(activeItems === BACKTEST_ITEMS ? 'backtest' : 'process', next);
+      }
+
+      function bindGalleryClicks(container) {
+        if (!container) return;
+        container.addEventListener('click', function (e) {
+          var card = e.target.closest('.gallery-card');
+          if (!card) return;
+          var gallery = card.getAttribute('data-gallery');
+          var index = Number(card.getAttribute('data-index'));
+          if (!Number.isNaN(index)) openLightbox(gallery, index);
+        });
+      }
+
+      async function filterExistingItems(items) {
+        var checks = await Promise.all(
+          items.map(function (item) {
+            return new Promise(function (resolve) {
+              var img = new Image();
+              img.onload = function () { resolve(item); };
+              img.onerror = function () { resolve(null); };
+              img.src = item.src;
+            });
+          })
+        );
+        return checks.filter(Boolean);
+      }
+
+      async function loadProcessItems() {
+        var source = PROCESS_FALLBACK;
+        try {
+          var res = await fetch('gallary/process/manifest.json', { cache: 'no-store' });
+          if (res.ok) {
+            var data = await res.json();
+            if (Array.isArray(data) && data.length) source = data;
+          }
+        } catch (e) {}
+
+        var existing = await filterExistingItems(source);
+        window.__processItems = existing;
+        renderProcessGrid(existing);
+      }
+
+      renderBacktestGrid();
+      loadProcessItems();
+      bindGalleryClicks(backtestGrid);
+      bindGalleryClicks(processGrid);
+
+      if (btnClose) btnClose.addEventListener('click', closeLightbox);
+      if (btnPrev) btnPrev.addEventListener('click', function () { showRelative(-1); });
+      if (btnNext) btnNext.addEventListener('click', function () { showRelative(1); });
+
+      if (lightbox) {
+        lightbox.addEventListener('click', function (e) {
+          if (e.target === lightbox) closeLightbox();
+        });
+      }
+
+      document.addEventListener('keydown', function (e) {
+        if (activeIndex < 0) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') showRelative(-1);
+        if (e.key === 'ArrowRight') showRelative(1);
+      });
+    })();
+  </script>
+</body>
+</html>

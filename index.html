@@ -66,7 +66,7 @@
 
   <header class="sticky top-0 z-50 border-b border-white/5 bg-space/80 backdrop-blur-xl">
     <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
-      <a href="#" class="group flex items-center gap-2.5">
+      <a href="index.html" class="group flex items-center gap-2.5">
         <span class="flex h-10 w-10 items-center justify-center rounded-xl border border-moon/25 bg-gradient-to-br from-moon/20 to-transparent text-moon shadow-[0_0_24px_rgba(246,224,94,0.15)] transition group-hover:border-moon/50">
           <i class="fa-solid fa-moon text-lg"></i>
         </span>
@@ -75,10 +75,9 @@
           <span class="text-[11px] font-medium uppercase tracking-[0.2em] text-slate-500" data-i18n="brand_tag">Full-universe backtest</span>
         </div>
       </a>
-      <nav class="hidden items-center gap-8 lg:flex">
-        <a href="#finder" class="text-sm font-medium text-slate-400 transition hover:text-moon" data-i18n="nav_finder">MoonBack Finder</a>
-        <a href="#youtube" class="text-sm font-medium text-slate-400 transition hover:text-moon" data-i18n="nav_youtube">YouTube</a>
-        <a href="#docs" class="text-sm font-medium text-slate-400 transition hover:text-moon" data-i18n="nav_docs">Docs</a>
+      <nav class="flex items-center gap-1 rounded-xl border border-white/10 bg-space-card/60 p-1">
+        <a href="index.html" class="rounded-lg bg-moon/15 px-4 py-2 text-sm font-semibold text-moon ring-1 ring-moon/30" data-i18n="nav_finder">MoonBack Finder</a>
+        <a href="notice-bot.html" class="rounded-lg px-4 py-2 text-sm font-medium text-slate-400 transition hover:text-white" data-i18n="nav_notice_bot">공지사항 매매봇</a>
       </nav>
       <div class="flex items-center gap-3">
         <label for="lang-select" class="sr-only" data-i18n="lang_label">Language</label>
@@ -92,11 +91,6 @@
         </div>
       </div>
     </div>
-    <nav class="flex justify-center gap-5 border-t border-white/5 py-2.5 lg:hidden">
-      <a href="#finder" class="text-xs font-medium text-slate-400 hover:text-moon" data-i18n="nav_finder">MoonBack Finder</a>
-      <a href="#youtube" class="text-xs font-medium text-slate-400 hover:text-moon" data-i18n="nav_youtube">YouTube</a>
-      <a href="#docs" class="text-xs font-medium text-slate-400 hover:text-moon" data-i18n="nav_docs">Docs</a>
-    </nav>
   </header>
 
   <main>
@@ -342,8 +336,7 @@
           brand: 'MoonBacktest',
           brand_tag: '전수 백테스트 · 터미널',
           nav_finder: 'MoonBack Finder',
-          nav_youtube: 'YouTube',
-          nav_docs: '문서',
+          nav_notice_bot: '공지사항 매매봇',
           lang_label: '언어',
           hero_badge: 'MoonBack Finder',
           hero_title: '이길 수 있는 판만 골라서 들어가세요.',
@@ -392,8 +385,7 @@
           brand: 'MoonBacktest',
           brand_tag: 'Full-universe backtest · Terminal',
           nav_finder: 'MoonBack Finder',
-          nav_youtube: 'YouTube',
-          nav_docs: 'Docs',
+          nav_notice_bot: 'Notice Trading Bot',
           lang_label: 'Language',
           hero_badge: 'MoonBack Finder · Professional terminal',
           hero_title: 'Only take trades you can win.',
